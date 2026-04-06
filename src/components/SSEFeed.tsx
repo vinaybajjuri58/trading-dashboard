@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { API_BASE } from '../api/config';
 import type { SSEEvent } from '../types/api';
 
@@ -12,13 +12,13 @@ type StatusDotProps = {
 
 function StatusDot({ status }: StatusDotProps) {
   const cfg: Record<ConnectionStatus, { dot: string; label: string }> = {
-    live:         { dot: 'bg-positive',           label: 'Live' },
-    connecting:   { dot: 'bg-warn animate-pulse', label: 'Connecting' },
-    reconnecting: { dot: 'bg-warn animate-pulse', label: 'Reconnecting' },
+    live:         { dot: 'bg-positive',            label: 'Live' },
+    connecting:   { dot: 'bg-warn animate-pulse',  label: 'Connecting' },
+    reconnecting: { dot: 'bg-warn animate-pulse',  label: 'Reconnecting' },
   };
   const { dot, label } = cfg[status];
   return (
-    <span className="flex items-center gap-1.5 text-xs text-subtle">
+    <span className="flex items-center gap-1.5 text-xs text-card-muted">
       <span className={`h-2 w-2 rounded-full ${dot}`} />
       {label}
     </span>
@@ -43,13 +43,13 @@ function EventRow({ event }: EventRowProps) {
     minute: '2-digit',
     second: '2-digit',
   });
-  const typeColor = TYPE_COLORS[event.type] ?? 'text-subtle';
+  const typeColor = TYPE_COLORS[event.type] ?? 'text-card-muted';
 
   return (
-    <div className="flex gap-2 px-2 py-1 rounded hover:bg-overlay text-xs font-mono">
-      <span className="text-muted shrink-0 w-20">{time}</span>
+    <div className="flex gap-2 px-2 py-1 rounded hover:bg-card-alt text-xs font-mono">
+      <span className="text-card-dim shrink-0 w-20">{time}</span>
       <span className={`shrink-0 w-20 ${typeColor}`}>{event.type}</span>
-      <span className="text-white/70 truncate flex-1 min-w-0">
+      <span className="text-card-muted truncate flex-1 min-w-0">
         {JSON.stringify(event).replace(/^{|}$/g, '').slice(0, 140)}
       </span>
     </div>
@@ -101,14 +101,14 @@ export default function SSEFeed({ onEvent }: SSEFeedProps) {
 
   return (
     <div className="card flex flex-col h-full overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-divider shrink-0">
-        <h3 className="text-sm font-semibold text-white">Live Event Feed</h3>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-card-border shrink-0">
+        <h3 className="text-sm font-semibold text-card-fg">Live Event Feed</h3>
         <StatusDot status={status} />
       </div>
 
       <div className="flex-1 overflow-y-auto p-2 space-y-0.5">
         {events.length === 0 ? (
-          <p className="text-muted text-xs text-center py-8">Waiting for events…</p>
+          <p className="text-card-dim text-xs text-center py-8">Waiting for events…</p>
         ) : (
           events.map((evt, i) => <EventRow key={i} event={evt} />)
         )}

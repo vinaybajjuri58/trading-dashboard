@@ -6,9 +6,9 @@ type BadgeConfig = {
 };
 
 const BADGE_CONFIG: Record<'pass' | 'fail' | 'null', BadgeConfig> = {
-  pass: { label: '✓ Pass', className: 'bg-positive/10 text-positive border-positive/25' },
-  fail: { label: '✗ Fail', className: 'bg-negative/10 text-negative border-negative/25' },
-  null: { label: '—',      className: 'bg-overlay text-muted border-divider' },
+  pass: { label: '✓ Pass', className: 'bg-positive/15 text-positive border-positive/25' },
+  fail: { label: '✗ Fail', className: 'bg-negative/15 text-negative border-negative/25' },
+  null: { label: '—',      className: 'bg-card-alt text-card-dim border-card-border' },
 };
 
 type BadgePassProps = {

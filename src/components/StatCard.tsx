@@ -8,14 +8,14 @@ type StatCardProps = {
   accentColor?: string;
 };
 
-export default function StatCard({ label, value, sub, icon: Icon, accentColor = '#58a6ff' }: StatCardProps) {
+export default function StatCard({ label, value, sub, icon: Icon, accentColor = '#0d7c66' }: StatCardProps) {
   return (
     <div className="card p-5 flex flex-col gap-3">
       <div className="flex items-start justify-between">
-        <p className="text-xs font-medium text-subtle uppercase tracking-wide">{label}</p>
+        <p className="card-label">{label}</p>
         {Icon && (
           <span
-            className="p-1.5 rounded-md"
+            className="p-1.5 rounded-lg"
             style={{ backgroundColor: `${accentColor}18` }}
           >
             <Icon size={14} style={{ color: accentColor }} />
@@ -23,8 +23,8 @@ export default function StatCard({ label, value, sub, icon: Icon, accentColor = 
         )}
       </div>
       <div>
-        <p className="text-3xl font-bold text-white tabular-nums">{value ?? '—'}</p>
-        {sub && <p className="mt-1 text-xs text-muted">{sub}</p>}
+        <p className="text-3xl font-bold text-card-fg tabular-nums font-mono">{value ?? '—'}</p>
+        {sub && <p className="mt-1 text-xs text-card-dim">{sub}</p>}
       </div>
     </div>
   );

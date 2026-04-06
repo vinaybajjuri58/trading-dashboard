@@ -13,7 +13,7 @@
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #30363d transparent;
+    scrollbar-color: #d8d3ca transparent;
   }
 
   *::-webkit-scrollbar {
@@ -26,35 +26,48 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #30363d;
+    background: #d8d3ca;
     border-radius: 3px;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: #484f58;
+    background: #c5c0b8;
   }
 }
 
 @layer components {
   .card {
-    @apply bg-surface border border-divider rounded-lg;
+    background-color: #f0ebe3;
+    color: #1c1917;
+    border: 1px solid #d8d3ca;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .card-label {
+    @apply text-xs font-medium text-card-muted uppercase tracking-wider;
+  }
+
+  .card-value {
+    @apply font-mono font-bold text-card-fg;
   }
 
   .btn {
-    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer;
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer;
   }
 
   .btn-primary {
-    @apply btn bg-accent text-canvas hover:bg-blue-400;
+    @apply btn bg-accent text-white hover:bg-accent-dim;
   }
 
   .btn-ghost {
-    @apply btn hover:bg-overlay text-subtle hover:text-white border border-transparent hover:border-divider;
+    @apply btn text-card-muted hover:text-card-fg hover:bg-card-alt border border-card-border;
   }
 
   .input {
-    @apply bg-overlay border border-divider rounded-md px-3 py-1.5 text-sm text-white placeholder-muted
-           focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-colors;
+    @apply bg-white border border-card-border rounded-lg px-3 py-2 text-sm text-card-fg
+           placeholder-card-dim focus:outline-none focus:ring-2 focus:ring-accent/30
+           focus:border-accent transition-colors;
   }
 
   .select {
@@ -62,14 +75,14 @@
   }
 
   .metric-row {
-    @apply flex justify-between items-center py-2 border-b border-divider/40 last:border-0;
+    @apply flex justify-between items-center py-2.5 border-b border-card-border/50 last:border-0;
   }
 
   .metric-label {
-    @apply text-subtle text-xs;
+    @apply text-card-muted text-xs;
   }
 
   .metric-value {
-    @apply font-mono text-sm font-medium text-white;
+    @apply font-mono text-sm font-semibold text-card-fg;
   }
 }

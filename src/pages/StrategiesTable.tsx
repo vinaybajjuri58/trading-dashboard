@@ -21,18 +21,18 @@ type Column = {
 };
 
 const COLUMNS: Column[] = [
-  { key: 'strategy_name', label: 'Strategy',     align: 'left',   sortable: true  },
-  { key: 'market',        label: 'Market',        align: 'left',   sortable: true  },
-  { key: 'instrument',    label: 'Instrument',    align: 'left',   sortable: false },
-  { key: 'timeframe',     label: 'Timeframe',     align: 'left',   sortable: true  },
-  { key: 'trades',        label: 'Trades',        align: 'right',  sortable: true  },
-  { key: 'cagr',          label: 'CAGR %',        align: 'right',  sortable: true  },
-  { key: 'sharpe',        label: 'Sharpe',        align: 'right',  sortable: true  },
-  { key: 'max_dd',        label: 'Max DD %',      align: 'right',  sortable: true  },
-  { key: 'win_rate',      label: 'Win Rate %',    align: 'right',  sortable: true  },
-  { key: 'profit_factor', label: 'Prof. Factor',  align: 'right',  sortable: true  },
-  { key: 'wf_pass',       label: 'WF',            align: 'center', sortable: true  },
-  { key: 'mc_pass',       label: 'MC',            align: 'center', sortable: true  },
+  { key: 'strategy_name', label: 'Strategy',    align: 'left',   sortable: true  },
+  { key: 'market',        label: 'Market',       align: 'left',   sortable: true  },
+  { key: 'instrument',    label: 'Instrument',   align: 'left',   sortable: false },
+  { key: 'timeframe',     label: 'Timeframe',    align: 'left',   sortable: true  },
+  { key: 'trades',        label: 'Trades',       align: 'right',  sortable: true  },
+  { key: 'cagr',          label: 'CAGR %',       align: 'right',  sortable: true  },
+  { key: 'sharpe',        label: 'Sharpe',       align: 'right',  sortable: true  },
+  { key: 'max_dd',        label: 'Max DD %',     align: 'right',  sortable: true  },
+  { key: 'win_rate',      label: 'Win Rate %',   align: 'right',  sortable: true  },
+  { key: 'profit_factor', label: 'Prof. Factor', align: 'right',  sortable: true  },
+  { key: 'wf_pass',       label: 'WF',           align: 'center', sortable: true  },
+  { key: 'mc_pass',       label: 'MC',           align: 'center', sortable: true  },
 ];
 
 const ALIGN_CLASS: Record<ColumnAlign, string> = {
@@ -41,12 +41,7 @@ const ALIGN_CLASS: Record<ColumnAlign, string> = {
   center: 'text-center',
 };
 
-// ---------------------------------------------------------------------------
-// Sort helpers
-// ---------------------------------------------------------------------------
-
 function compareValues(a: Strategy[keyof Strategy], b: Strategy[keyof Strategy], dir: SortDir): number {
-  // Nulls always last
   if (a == null && b == null) return 0;
   if (a == null) return 1;
   if (b == null) return -1;
@@ -55,18 +50,12 @@ function compareValues(a: Strategy[keyof Strategy], b: Strategy[keyof Strategy],
     return dir === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
   }
   if (typeof a === 'boolean' && typeof b === 'boolean') {
-    const na = a ? 1 : 0;
-    const nb = b ? 1 : 0;
-    return dir === 'asc' ? na - nb : nb - na;
+    return dir === 'asc' ? Number(a) - Number(b) : Number(b) - Number(a);
   }
   const na = Number(a);
   const nb = Number(b);
   return dir === 'asc' ? na - nb : nb - na;
 }
-
-// ---------------------------------------------------------------------------
-// Main component
-// ---------------------------------------------------------------------------
 
 export default function StrategiesTable() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -83,7 +72,6 @@ export default function StrategiesTable() {
   };
 
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
-
   const { data: strategies, isLoading, isFetching, error, refetch } = useStrategies(filters);
 
   const setFilter = (key: keyof StrategyFilters, val: string) => {
@@ -117,12 +105,12 @@ export default function StrategiesTable() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Strategies</h1>
-          <p className="text-subtle text-sm mt-1">
+          <p className="text-sb-text text-sm mt-1">
             {strategies
               ? `${sorted.length} strateg${sorted.length === 1 ? 'y' : 'ies'}`
               : 'Loading…'}
             {isFetching && !isLoading && (
-              <span className="ml-2 text-xs text-muted">(refreshing…)</span>
+              <span className="ml-2 text-xs text-sb-text/60">(refreshing…)</span>
             )}
           </p>
         </div>
@@ -134,39 +122,23 @@ export default function StrategiesTable() {
 
       {/* Filter bar */}
       <div className="card p-4 flex flex-wrap items-center gap-3">
-        <select
-          className="select"
-          value={filters.market}
-          onChange={e => setFilter('market', e.target.value)}
-        >
+        <select className="select" value={filters.market} onChange={e => setFilter('market', e.target.value)}>
           <option value="">All Markets</option>
           {MARKETS.map(m => <option key={m} value={m}>{m}</option>)}
         </select>
 
-        <select
-          className="select"
-          value={filters.timeframe}
-          onChange={e => setFilter('timeframe', e.target.value)}
-        >
+        <select className="select" value={filters.timeframe} onChange={e => setFilter('timeframe', e.target.value)}>
           <option value="">All Timeframes</option>
           {TIMEFRAMES.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
 
-        <select
-          className="select"
-          value={filters.wf_pass}
-          onChange={e => setFilter('wf_pass', e.target.value)}
-        >
+        <select className="select" value={filters.wf_pass} onChange={e => setFilter('wf_pass', e.target.value)}>
           <option value="">WF: All</option>
           <option value="true">WF: Pass</option>
           <option value="false">WF: Fail</option>
         </select>
 
-        <select
-          className="select"
-          value={filters.mc_pass}
-          onChange={e => setFilter('mc_pass', e.target.value)}
-        >
+        <select className="select" value={filters.mc_pass} onChange={e => setFilter('mc_pass', e.target.value)}>
           <option value="">MC: All</option>
           <option value="true">MC: Pass</option>
           <option value="false">MC: Fail</option>
@@ -206,21 +178,21 @@ export default function StrategiesTable() {
         ) : error ? (
           <div className="flex flex-col items-center justify-center flex-1 gap-2">
             <p className="text-negative text-sm">Failed to load strategies</p>
-            <p className="text-muted text-xs">{error.message}</p>
+            <p className="text-card-dim text-xs">{error.message}</p>
           </div>
         ) : sorted.length === 0 ? (
           <EmptyState message="No strategies match the current filters" className="flex-1" />
         ) : (
           <div className="overflow-auto flex-1">
             <table className="w-full text-sm border-collapse">
-              <thead className="sticky top-0 bg-surface z-10">
-                <tr className="border-b border-divider">
+              <thead className="sticky top-0 bg-card z-10">
+                <tr className="border-b border-card-border">
                   {COLUMNS.map(col => (
                     <th
                       key={col.key}
-                      className={`px-4 py-3 text-xs font-semibold text-subtle uppercase tracking-wide whitespace-nowrap
+                      className={`px-4 py-3 card-label whitespace-nowrap
                         ${ALIGN_CLASS[col.align]}
-                        ${col.sortable ? 'cursor-pointer select-none hover:text-white transition-colors' : ''}`}
+                        ${col.sortable ? 'cursor-pointer select-none hover:text-card-fg transition-colors' : ''}`}
                       onClick={() => col.sortable && handleSort(col.key)}
                     >
                       <span className="inline-flex items-center gap-1">
@@ -249,10 +221,6 @@ export default function StrategiesTable() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Sub-components
-// ---------------------------------------------------------------------------
-
 type SortIconProps = {
   field: keyof Strategy;
   sortField: keyof Strategy;
@@ -260,7 +228,7 @@ type SortIconProps = {
 };
 
 function SortIcon({ field, sortField, sortDir }: SortIconProps) {
-  if (field !== sortField) return <ChevronsUpDown size={11} className="text-muted/60 shrink-0" />;
+  if (field !== sortField) return <ChevronsUpDown size={11} className="text-card-dim shrink-0" />;
   return sortDir === 'asc'
     ? <ChevronUp   size={11} className="text-accent shrink-0" />
     : <ChevronDown size={11} className="text-accent shrink-0" />;
@@ -273,31 +241,31 @@ type StrategyRowProps = {
 function StrategyRow({ strategy: s }: StrategyRowProps) {
   const sid = s.id ?? s.strategy_id;
   return (
-    <tr className="border-b border-divider/30 hover:bg-overlay/60 transition-colors">
+    <tr className="border-b border-card-border/30 hover:bg-card-hover transition-colors">
       <td className="px-4 py-2.5 max-w-[220px]">
         {sid != null ? (
           <Link to={`/strategies/${sid}`} className="text-accent hover:underline font-medium truncate block">
             {s.strategy_name}
           </Link>
         ) : (
-          <span className="font-medium truncate block text-white">{s.strategy_name}</span>
+          <span className="font-medium truncate block text-card-fg">{s.strategy_name}</span>
         )}
       </td>
       <td className="px-4 py-2.5"><MarketBadge market={s.market} /></td>
-      <td className="px-4 py-2.5 text-subtle text-xs">{s.instrument ?? '—'}</td>
-      <td className="px-4 py-2.5 text-subtle text-xs">{s.timeframe ?? '—'}</td>
-      <td className="px-4 py-2.5 text-right font-mono text-xs text-subtle">{fmtInt(s.trades)}</td>
+      <td className="px-4 py-2.5 text-card-muted text-xs">{s.instrument ?? '—'}</td>
+      <td className="px-4 py-2.5 text-card-muted text-xs">{s.timeframe ?? '—'}</td>
+      <td className="px-4 py-2.5 text-right font-mono text-xs text-card-muted">{fmtInt(s.trades)}</td>
       <td className="px-4 py-2.5 text-right font-mono text-sm">
         <span className={(s.cagr ?? 0) >= 0 ? 'text-positive' : 'text-negative'}>{fmtPct(s.cagr)}</span>
       </td>
       <td className="px-4 py-2.5 text-right font-mono text-sm">
-        <span className={(s.sharpe ?? 0) >= 2 ? 'text-positive font-semibold' : 'text-white'}>{fmtNum(s.sharpe)}</span>
+        <span className={(s.sharpe ?? 0) >= 2 ? 'text-positive font-semibold' : 'text-card-fg'}>{fmtNum(s.sharpe)}</span>
       </td>
       <td className="px-4 py-2.5 text-right font-mono text-sm">
-        <span className={s.max_dd != null && s.max_dd <= -20 ? 'text-negative' : 'text-subtle'}>{fmtPct(s.max_dd)}</span>
+        <span className={s.max_dd != null && s.max_dd <= -20 ? 'text-negative' : 'text-card-muted'}>{fmtPct(s.max_dd)}</span>
       </td>
-      <td className="px-4 py-2.5 text-right font-mono text-sm text-white">{fmtPct(s.win_rate)}</td>
-      <td className="px-4 py-2.5 text-right font-mono text-sm text-white">{fmtNum(s.profit_factor)}</td>
+      <td className="px-4 py-2.5 text-right font-mono text-sm text-card-fg">{fmtPct(s.win_rate)}</td>
+      <td className="px-4 py-2.5 text-right font-mono text-sm text-card-fg">{fmtNum(s.profit_factor)}</td>
       <td className="px-4 py-2.5 text-center"><BadgePass value={s.wf_pass} /></td>
       <td className="px-4 py-2.5 text-center"><BadgePass value={s.mc_pass} /></td>
     </tr>

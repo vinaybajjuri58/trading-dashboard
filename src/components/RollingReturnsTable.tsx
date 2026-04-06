@@ -10,10 +10,10 @@ type PctCellProps = {
 
 function PctCell({ value }: PctCellProps) {
   if (value == null) {
-    return <td className="py-2.5 text-right font-mono text-muted text-sm">—</td>;
+    return <td className="py-2.5 text-right font-mono text-card-dim text-sm">—</td>;
   }
   return (
-    <td className={`py-2.5 text-right font-mono text-sm ${value < 0 ? 'text-negative' : 'text-positive'}`}>
+    <td className={`py-2.5 text-right font-mono text-sm font-medium ${value < 0 ? 'text-negative' : 'text-positive'}`}>
       {fmtPct(value)}
     </td>
   );
@@ -30,18 +30,18 @@ export default function RollingReturnsTable({ data }: RollingReturnsTableProps) 
     <table className="w-full text-sm">
       <thead>
         <tr>
-          <th className="text-left py-2 text-xs font-medium text-subtle uppercase tracking-wide">Period</th>
-          <th className="text-right py-2 text-xs font-medium text-subtle uppercase tracking-wide">Min</th>
-          <th className="text-right py-2 text-xs font-medium text-subtle uppercase tracking-wide">Median</th>
-          <th className="text-right py-2 text-xs font-medium text-subtle uppercase tracking-wide">Max</th>
+          <th className="text-left py-2 card-label">Period</th>
+          <th className="text-right py-2 card-label">Min</th>
+          <th className="text-right py-2 card-label">Median</th>
+          <th className="text-right py-2 card-label">Max</th>
         </tr>
       </thead>
       <tbody>
         {PERIODS.map(period => {
           const row: RollingPeriod | undefined = data[period];
           return (
-            <tr key={period} className="border-t border-divider">
-              <td className="py-2.5 text-subtle font-mono text-xs uppercase">{period}</td>
+            <tr key={period} className="border-t border-card-border/50">
+              <td className="py-2.5 text-card-muted font-mono text-xs uppercase">{period}</td>
               <PctCell value={row?.min} />
               <PctCell value={row?.median} />
               <PctCell value={row?.max} />

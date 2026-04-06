@@ -8,10 +8,6 @@ import RollingReturnsTable from '../components/RollingReturnsTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { fmtPct, fmtNum, fmtInt } from '../utils/format';
 
-// ---------------------------------------------------------------------------
-// Sub-component types
-// ---------------------------------------------------------------------------
-
 type ChipProps = {
   label: string;
   value: string;
@@ -26,15 +22,11 @@ type MetricRowProps = {
   forceColor?: 'pos' | 'neg' | null;
 };
 
-// ---------------------------------------------------------------------------
-// Sub-components
-// ---------------------------------------------------------------------------
-
 function BackLink() {
   return (
     <Link
       to="/strategies"
-      className="inline-flex items-center gap-1.5 text-subtle hover:text-white text-sm transition-colors"
+      className="inline-flex items-center gap-1.5 text-sb-text hover:text-white text-sm transition-colors"
     >
       <ArrowLeft size={13} />
       Back to Strategies
@@ -43,17 +35,17 @@ function BackLink() {
 }
 
 function Chip({ label, value, positive, negative }: ChipProps) {
-  const textCls = positive ? 'text-positive' : negative ? 'text-negative' : 'text-white';
+  const textCls = positive ? 'text-positive' : negative ? 'text-negative' : 'text-card-fg';
   return (
-    <div className="bg-overlay border border-divider rounded-md px-3.5 py-2 text-center min-w-[72px]">
-      <p className="text-xs text-muted mb-0.5">{label}</p>
+    <div className="bg-card-alt border border-card-border rounded-lg px-3.5 py-2 text-center min-w-[72px]">
+      <p className="text-xs text-card-dim mb-0.5">{label}</p>
       <p className={`text-sm font-bold font-mono ${textCls}`}>{value}</p>
     </div>
   );
 }
 
 function MetricRow({ label, value, colorVal, forceColor }: MetricRowProps) {
-  let textCls = 'text-white';
+  let textCls = 'text-card-fg';
   if (forceColor === 'pos') textCls = 'text-positive';
   else if (forceColor === 'neg') textCls = 'text-negative';
   else if (colorVal != null) textCls = colorVal >= 0 ? 'text-positive' : 'text-negative';
@@ -65,10 +57,6 @@ function MetricRow({ label, value, colorVal, forceColor }: MetricRowProps) {
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
 
 export default function StrategyDetail() {
   const { id } = useParams<{ id: string }>();
@@ -89,7 +77,7 @@ export default function StrategyDetail() {
         <BackLink />
         <div className="flex flex-col items-center justify-center mt-16 gap-2">
           <p className="text-negative text-sm">Failed to load strategy</p>
-          <p className="text-muted text-xs">{error.message}</p>
+          <p className="text-sb-text text-xs">{error.message}</p>
         </div>
       </div>
     );
@@ -109,16 +97,16 @@ export default function StrategyDetail() {
       <div className="card p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white mb-2.5">{strategy.strategy_name}</h1>
+            <h1 className="text-2xl font-bold text-card-fg mb-2.5">{strategy.strategy_name}</h1>
             <div className="flex items-center gap-2 flex-wrap">
               <MarketBadge market={strategy.market} />
               {strategy.instrument && (
-                <span className="text-subtle text-sm">{strategy.instrument}</span>
+                <span className="text-card-muted text-sm">{strategy.instrument}</span>
               )}
               {strategy.timeframe && (
                 <>
-                  <span className="text-muted">·</span>
-                  <span className="text-subtle text-sm">{strategy.timeframe}</span>
+                  <span className="text-card-dim">·</span>
+                  <span className="text-card-muted text-sm">{strategy.timeframe}</span>
                 </>
               )}
             </div>
@@ -135,7 +123,7 @@ export default function StrategyDetail() {
       {/* Metrics + validation */}
       <div className="grid grid-cols-2 gap-6">
         <div className="card p-5">
-          <h2 className="text-sm font-semibold text-white mb-4">Performance Metrics</h2>
+          <h2 className="text-sm font-semibold text-card-fg mb-4">Performance Metrics</h2>
           <dl className="space-y-0">
             <MetricRow label="Total Return"  value={fmtPct(strategy.total_return)}  colorVal={strategy.total_return} />
             <MetricRow label="CAGR"          value={fmtPct(strategy.cagr)}          colorVal={strategy.cagr} />
@@ -154,7 +142,7 @@ export default function StrategyDetail() {
           {hasWF && (
             <div className="card p-5">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-white">Walk-Forward Validation</h2>
+                <h2 className="text-sm font-semibold text-card-fg">Walk-Forward Validation</h2>
                 <BadgePass value={strategy.wf_pass} />
               </div>
               <dl className="space-y-0">
@@ -169,7 +157,7 @@ export default function StrategyDetail() {
           {hasMC && (
             <div className="card p-5">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-white">Monte Carlo Analysis</h2>
+                <h2 className="text-sm font-semibold text-card-fg">Monte Carlo Analysis</h2>
                 <BadgePass value={strategy.mc_pass} />
               </div>
               <dl className="space-y-0">
@@ -182,7 +170,7 @@ export default function StrategyDetail() {
 
           {!hasWF && !hasMC && (
             <div className="card p-5 flex items-center justify-center h-32">
-              <p className="text-muted text-sm">No validation data available</p>
+              <p className="text-card-dim text-sm">No validation data available</p>
             </div>
           )}
         </div>
@@ -191,15 +179,15 @@ export default function StrategyDetail() {
       {/* Forex-only charts */}
       {isForex && strategy.annual_returns && Object.keys(strategy.annual_returns).length > 0 && (
         <div className="card p-5">
-          <h2 className="text-sm font-semibold text-white mb-1">Annual Returns</h2>
-          <p className="text-xs text-muted mb-4">Yearly performance 2021–present</p>
+          <h2 className="text-sm font-semibold text-card-fg mb-1">Annual Returns</h2>
+          <p className="text-xs text-card-dim mb-4">Yearly performance 2021–present</p>
           <AnnualReturnsChart data={strategy.annual_returns} />
         </div>
       )}
 
       {isForex && strategy.rolling && (
         <div className="card p-5">
-          <h2 className="text-sm font-semibold text-white mb-4">Rolling Returns</h2>
+          <h2 className="text-sm font-semibold text-card-fg mb-4">Rolling Returns</h2>
           <RollingReturnsTable data={strategy.rolling} />
         </div>
       )}

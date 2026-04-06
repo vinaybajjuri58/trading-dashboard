@@ -4,7 +4,7 @@ type MarketBadgeProps = {
   market: string | null | undefined;
 };
 
-const FALLBACK_STYLE = 'bg-overlay text-subtle border-divider';
+const FALLBACK_STYLE = 'bg-card-alt text-card-dim border-card-border';
 
 export default function MarketBadge({ market }: MarketBadgeProps) {
   const cls = (market && MARKET_BADGE_STYLES[market]) || FALLBACK_STYLE;
