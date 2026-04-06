@@ -71,19 +71,22 @@ export default function StrategyDetail() {
     );
   }
 
-  if (error) {
+  if ((error || !strategy) && !isLoading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="p-6 space-y-6 max-w-5xl">
         <BackLink />
-        <div className="flex flex-col items-center justify-center mt-16 gap-2">
-          <p className="text-negative text-sm">Failed to load strategy</p>
-          <p className="text-sb-text text-xs">{error.message}</p>
+        {error && (
+          <div className="rounded-lg border border-negative/30 bg-negative/10 px-4 py-2.5 text-xs text-negative/80">
+            API unavailable — could not load strategy. {error.message}
+          </div>
+        )}
+        <div className="card p-6">
+          <h1 className="text-2xl font-bold text-card-fg mb-2.5">—</h1>
+          <p className="text-card-dim text-sm">No data available</p>
         </div>
       </div>
     );
   }
-
-  if (!strategy) return null;
 
   const isForex = strategy.market === 'Forex';
   const hasWF   = strategy.wf_pass != null || strategy.wf_oos_sharpe != null;

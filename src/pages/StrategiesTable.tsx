@@ -106,9 +106,9 @@ export default function StrategiesTable() {
         <div>
           <h1 className="text-2xl font-bold text-white">Strategies</h1>
           <p className="text-sb-text text-sm mt-1">
-            {strategies
-              ? `${sorted.length} strateg${sorted.length === 1 ? 'y' : 'ies'}`
-              : 'Loading…'}
+            {isLoading
+              ? 'Loading…'
+              : `${sorted.length} strateg${sorted.length === 1 ? 'y' : 'ies'}`}
             {isFetching && !isLoading && (
               <span className="ml-2 text-xs text-sb-text/60">(refreshing…)</span>
             )}
@@ -171,15 +171,17 @@ export default function StrategiesTable() {
         )}
       </div>
 
+      {/* Error banner */}
+      {error && (
+        <div className="rounded-lg border border-negative/30 bg-negative/10 px-4 py-2.5 text-xs text-negative/80 shrink-0">
+          API unavailable — showing empty state. {error.message}
+        </div>
+      )}
+
       {/* Table */}
       <div className="card flex-1 overflow-hidden flex flex-col min-h-0">
         {isLoading ? (
           <LoadingSpinner size="lg" className="flex-1" />
-        ) : error ? (
-          <div className="flex flex-col items-center justify-center flex-1 gap-2">
-            <p className="text-negative text-sm">Failed to load strategies</p>
-            <p className="text-card-dim text-xs">{error.message}</p>
-          </div>
         ) : sorted.length === 0 ? (
           <EmptyState message="No strategies match the current filters" className="flex-1" />
         ) : (

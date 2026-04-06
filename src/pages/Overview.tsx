@@ -32,18 +32,7 @@ export default function Overview() {
 
   if (isLoading) return <LoadingSpinner size="lg" className="h-full" />;
 
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full gap-2">
-        <p className="text-negative text-sm">Failed to load summary</p>
-        <p className="text-sb-text text-xs">{error.message}</p>
-      </div>
-    );
-  }
-
-  if (!data) return <EmptyState className="h-full" />;
-
-  const { total, wf_pass_count, mc_pass_count, both_pass_count, by_market, top_strategies } = data;
+  const { total = 0, wf_pass_count = 0, mc_pass_count = 0, both_pass_count = 0, by_market = {}, top_strategies = [] } = data ?? {};
 
   const marketData = Object.entries(by_market ?? {}).map(([name, value]) => ({
     name,
@@ -57,6 +46,12 @@ export default function Overview() {
         <h1 className="text-2xl font-bold text-white">Overview</h1>
         <p className="text-sb-text text-sm mt-1">Strategy portfolio health at a glance</p>
       </div>
+
+      {error && (
+        <div className="rounded-lg border border-negative/30 bg-negative/10 px-4 py-2.5 text-xs text-negative/80">
+          API unavailable — showing empty state. {error.message}
+        </div>
+      )}
 
       {/* Stat cards */}
       <div className="grid grid-cols-4 gap-4">

@@ -253,15 +253,6 @@ export default function ForwardTests() {
 
   if (isLoading) return <LoadingSpinner size="lg" className="h-full" />;
 
-  if (error) {
-    return (
-      <div className="p-6 flex flex-col items-center justify-center h-full gap-2">
-        <p className="text-negative text-sm">Failed to load forward tests</p>
-        <p className="text-sb-text text-xs">{error.message}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="p-6 space-y-6 h-full flex flex-col">
       <div className="shrink-0">
@@ -270,6 +261,12 @@ export default function ForwardTests() {
           Live IB paper account — {tests?.length ?? 0} strategies running
         </p>
       </div>
+
+      {error && (
+        <div className="rounded-lg border border-negative/30 bg-negative/10 px-4 py-2.5 text-xs text-negative/80 shrink-0">
+          API unavailable — showing empty state. {error.message}
+        </div>
+      )}
 
       {/* Strategy cards */}
       <div className="shrink-0">
