@@ -126,6 +126,74 @@ export default function StrategyDetail() {
         </div>
       </div>
 
+      {/* Strategy Rules */}
+      {(strategy.entry_rule || strategy.exit_rule || strategy.stop_rule) && (
+        <div className="card p-6 space-y-5">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <h2 className="text-sm font-semibold text-card-fg">Strategy Rules</h2>
+            {strategy.verdict && (
+              <span className={`inline-flex items-center px-2.5 py-1 rounded text-xs font-semibold border ${
+                strategy.verdict.toLowerCase().includes('avoid')
+                  ? 'bg-negative/10 text-negative border-negative/25'
+                  : strategy.verdict.toLowerCase().includes('pass') || strategy.verdict.toLowerCase().includes('promising')
+                    ? 'bg-positive/10 text-positive border-positive/25'
+                    : 'bg-card-alt text-card-dim border-card-border'
+              }`}>
+                {strategy.verdict}
+              </span>
+            )}
+          </div>
+
+          {strategy.verdict_reason && (
+            <p className="text-xs text-card-dim italic -mt-2">{strategy.verdict_reason}</p>
+          )}
+
+          <div className="grid grid-cols-1 gap-4">
+            {strategy.entry_rule && (
+              <div className="space-y-1">
+                <p className="text-xs font-semibold uppercase tracking-wider text-positive/80">Entry</p>
+                <p className="text-sm text-card-muted leading-relaxed">{strategy.entry_rule}</p>
+              </div>
+            )}
+            {strategy.stop_rule && (
+              <div className="space-y-1 pt-3 border-t border-card-border">
+                <p className="text-xs font-semibold uppercase tracking-wider text-negative/80">Stop Loss</p>
+                <p className="text-sm text-card-muted leading-relaxed">{strategy.stop_rule}</p>
+              </div>
+            )}
+            {strategy.exit_rule && (
+              <div className="space-y-1 pt-3 border-t border-card-border">
+                <p className="text-xs font-semibold uppercase tracking-wider text-accent/80">Exit / Take Profit</p>
+                <p className="text-sm text-card-muted leading-relaxed">{strategy.exit_rule}</p>
+              </div>
+            )}
+          </div>
+
+          {(strategy.key_params || strategy.source_book || strategy.data_period) && (
+            <div className="pt-4 border-t border-card-border grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {strategy.key_params && (
+                <div className="space-y-1">
+                  <p className="text-xs font-medium text-card-dim uppercase tracking-wider">Key Parameters</p>
+                  <p className="text-xs text-card-muted font-mono leading-relaxed">{strategy.key_params}</p>
+                </div>
+              )}
+              {strategy.source_book && (
+                <div className="space-y-1 sm:col-span-2">
+                  <p className="text-xs font-medium text-card-dim uppercase tracking-wider">Reference</p>
+                  <p className="text-xs text-card-muted leading-relaxed">{strategy.source_book}</p>
+                </div>
+              )}
+              {strategy.data_period && !strategy.source_book && (
+                <div className="space-y-1">
+                  <p className="text-xs font-medium text-card-dim uppercase tracking-wider">Test Period</p>
+                  <p className="text-xs text-card-muted">{strategy.data_period}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Metrics + validation */}
       <div className="grid grid-cols-2 gap-6">
         <div className="card p-5">

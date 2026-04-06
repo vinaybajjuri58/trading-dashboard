@@ -33,6 +33,15 @@ export type Strategy = {
   timeframe: Timeframe | string | null;
   category: string | null;
   source: string | null;
+  // Strategy rules (from strategy_index)
+  entry_rule: string | null;
+  stop_rule: string | null;
+  exit_rule: string | null;
+  key_params: string | null;
+  source_book: string | null;
+  data_period: string | null;
+  verdict: string | null;
+  verdict_reason: string | null;
   trades: number | null;
   cagr: number | null;
   sharpe: number | null;
