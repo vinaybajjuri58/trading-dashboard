@@ -7,7 +7,7 @@ import BadgePass from '../components/BadgePass';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
 import { fmtPct, fmtNum, fmtInt } from '../utils/format';
-import { MARKETS, TIMEFRAMES } from '../constants/markets';
+import { MARKETS, TIMEFRAMES, CATEGORIES, INSTRUMENTS } from '../constants/markets';
 import type { Strategy, StrategyFilters } from '../types/api';
 
 type SortDir = 'asc' | 'desc';
@@ -65,6 +65,8 @@ export default function StrategiesTable() {
   const filters: StrategyFilters = {
     market:     searchParams.get('market')     ?? '',
     timeframe:  searchParams.get('timeframe')  ?? '',
+    category:   searchParams.get('category')   ?? '',
+    instrument: searchParams.get('instrument') ?? '',
     wf_pass:    searchParams.get('wf_pass')    ?? '',
     mc_pass:    searchParams.get('mc_pass')    ?? '',
     min_sharpe: searchParams.get('min_sharpe') ?? '',
@@ -130,6 +132,16 @@ export default function StrategiesTable() {
         <select className="select" value={filters.timeframe} onChange={e => setFilter('timeframe', e.target.value)}>
           <option value="">All Timeframes</option>
           {TIMEFRAMES.map(t => <option key={t} value={t}>{t}</option>)}
+        </select>
+
+        <select className="select" value={filters.category} onChange={e => setFilter('category', e.target.value)}>
+          <option value="">All Categories</option>
+          {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+
+        <select className="select" value={filters.instrument} onChange={e => setFilter('instrument', e.target.value)}>
+          <option value="">All Instruments</option>
+          {INSTRUMENTS.map(i => <option key={i} value={i}>{i}</option>)}
         </select>
 
         <select className="select" value={filters.wf_pass} onChange={e => setFilter('wf_pass', e.target.value)}>

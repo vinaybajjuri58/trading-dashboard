@@ -90,6 +90,8 @@ export type BacktestSummary = {
 export type StrategyFilters = {
   market: string;
   timeframe: string;
+  category: string;
+  instrument: string;
   wf_pass: string;
   mc_pass: string;
   min_sharpe: string;

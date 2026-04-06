@@ -15,3 +15,24 @@ export const MARKET_BADGE_STYLES: Record<string, string> = {
 export const MARKETS: Market[] = ['Indian', 'Forex', 'Futures'];
 export const TIMEFRAMES = ['Intraday', 'Swing', 'Daily'] as const;
 export type TimeframeValue = (typeof TIMEFRAMES)[number];
+
+export const INSTRUMENTS = [
+  'NIFTY', 'BANKNIFTY', 'NIFTY+BNF',
+  'EURUSD', 'USDJPY', 'XAUUSD',
+  'ES=F', 'NQ=F',
+] as const;
+export type InstrumentValue = (typeof INSTRUMENTS)[number];
+
+export const CATEGORIES = [
+  'Momentum',
+  'Mean Reversion',
+  'Trend Following',
+  'Breakout',
+  'Carry',
+  'Macro',
+  'Statistical Arbitrage',
+  'Volatility',
+  'Seasonality',
+  'Adaptive',
+] as const;
+export type CategoryValue = (typeof CATEGORIES)[number];
