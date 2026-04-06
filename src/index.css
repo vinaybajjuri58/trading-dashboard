@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-canvas text-white font-sans antialiased;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #30363d transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 3px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-divider rounded-lg;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-canvas hover:bg-blue-400;
+  }
+
+  .btn-ghost {
+    @apply btn hover:bg-overlay text-subtle hover:text-white border border-transparent hover:border-divider;
+  }
+
+  .input {
+    @apply bg-overlay border border-divider rounded-md px-3 py-1.5 text-sm text-white placeholder-muted
+           focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-colors;
+  }
+
+  .select {
+    @apply input appearance-none cursor-pointer pr-8;
+  }
+
+  .metric-row {
+    @apply flex justify-between items-center py-2 border-b border-divider/40 last:border-0;
+  }
+
+  .metric-label {
+    @apply text-subtle text-xs;
+  }
+
+  .metric-value {
+    @apply font-mono text-sm font-medium text-white;
+  }
+}
