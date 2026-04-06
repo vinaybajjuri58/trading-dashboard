@@ -7,6 +7,7 @@ import AnnualReturnsChart from '../components/AnnualReturnsChart';
 import RollingReturnsTable from '../components/RollingReturnsTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { fmtPct, fmtNum, fmtInt } from '../utils/format';
+import { CATEGORY_DESCRIPTIONS, SOURCE_INFO } from '../constants/strategyMeta';
 
 type ChipProps = {
   label: string;
@@ -87,6 +88,8 @@ export default function StrategyDetail() {
       </div>
     );
   }
+
+  if (!strategy) return null;
 
   const isForex = strategy.market === 'Forex';
   const hasWF   = strategy.wf_pass != null || strategy.wf_oos_sharpe != null;
@@ -192,6 +195,45 @@ export default function StrategyDetail() {
         <div className="card p-5">
           <h2 className="text-sm font-semibold text-card-fg mb-4">Rolling Returns</h2>
           <RollingReturnsTable data={strategy.rolling} />
+        </div>
+      )}
+
+      {/* About block */}
+      {(strategy.category || strategy.source) && (
+        <div className="card p-6 space-y-6">
+          <h2 className="text-sm font-semibold text-card-fg">About This Strategy</h2>
+
+          {strategy.category && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-card-dim uppercase tracking-wider">Category</span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-accent/10 text-accent border-accent/25">
+                  {strategy.category}
+                </span>
+              </div>
+              {CATEGORY_DESCRIPTIONS[strategy.category] ? (
+                <p className="text-sm text-card-muted leading-relaxed">
+                  {CATEGORY_DESCRIPTIONS[strategy.category]}
+                </p>
+              ) : (
+                <p className="text-sm text-card-dim italic">No description available for this category.</p>
+              )}
+            </div>
+          )}
+
+          {strategy.source && (
+            <div className="space-y-2 pt-4 border-t border-card-border">
+              <span className="text-xs font-medium text-card-dim uppercase tracking-wider">Data Source</span>
+              {SOURCE_INFO[strategy.source] ? (
+                <>
+                  <p className="text-sm font-medium text-card-fg">{SOURCE_INFO[strategy.source].label}</p>
+                  <p className="text-sm text-card-muted leading-relaxed">{SOURCE_INFO[strategy.source].description}</p>
+                </>
+              ) : (
+                <p className="text-sm text-card-fg font-mono">{strategy.source}</p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

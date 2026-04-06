@@ -31,6 +31,8 @@ export type Strategy = {
   market: Market | string;
   instrument: string | null;
   timeframe: Timeframe | string | null;
+  category: string | null;
+  source: string | null;
   trades: number | null;
   cagr: number | null;
   sharpe: number | null;
